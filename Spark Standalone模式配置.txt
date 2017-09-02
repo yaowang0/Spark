@@ -1,0 +1,30 @@
+一、Spark Standalone模式
+内置主从结构：client模式 和 cluster模式
+
+二、配置
+1。修改slaves文件
+在conf目录下
+添加slaves文件，内容写上worker的机器，比如spark002, spark003
+
+2。修改spark-env.sh文件
+export JAVA_HOME=/usr/soft/jdk1.7.0_71
+export SPARK_MASTER_IP=spark001  #master的IP
+export SPARK_MASTER_PORT=7077
+export SPARK_WORKER_CORES=1
+export SPARK_WORKER_INSTANCES=1
+export SPARK_WORKER_MEMORY=1g
+
+三、启动
+1. ./sbin/start-all.sh
+(启动master和worker)
+jps命令：
+在master上可以看见master
+在worker上可以看见worker
+
+2. client模式：
+结果在xshell可见：
+./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://spark001:7077 --executor-memory 1G --total-executor-cores 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
+
+3. cluster模式：
+结果在UI上可见(端口为8080)：
+./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://spark001:7077 --deploy-mode cluster --supervise --executor-memory 1G --total-executor-cores 1 ./lib/spark-examples-1.3.1-hadoop2.4.0.jar 100
